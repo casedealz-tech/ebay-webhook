@@ -7,15 +7,18 @@ app.use(express.json());
 app.get('/ebay-deletion', (req, res) => {
   const challengeCode = req.query.challenge_code;
   if (!challengeCode) return res.status(400).send('No challenge code');
-  
-  const endpoint = 'https://ebay-webhook-qvfb.onrender.com/';
+
+  const endpoint = 'https://ebay-webhook-qvfb.onrender.com/ebay-deletion';
   const verificationToken = 'bargz_ebay_verification_token_secret_2024_secure';
-  
-  const hash = crypto.createHash('sha256')
-    .update(challengeCode + verificationToken + endpoint)
-    .digest('hex');
-  
-  res.json({ challengeResponse: hash });
+
+  const hash = crypto.createHash('sha256');
+  hash.update(challengeCode);
+  hash.update(verificationToken);
+  hash.update(endpoint);
+  const responseHash = hash.digest('hex');
+
+  res.setHeader('Content-Type', 'application/json');
+  res.json({ challengeResponse: responseHash });
 });
 
 app.post('/ebay-deletion', (req, res) => {
