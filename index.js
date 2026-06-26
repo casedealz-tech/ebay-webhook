@@ -9,7 +9,7 @@ app.get('/ebay-deletion', (req, res) => {
   if (!challengeCode) return res.status(400).send('No challenge code');
   
   const endpoint = 'https://ebay-webhook-qvfb.onrender.com/';
-  const verificationToken = 'bargz_ebay_token_2024';
+  const verificationToken = 'bargz_ebay_verification_token_secret_2024_secure';
   
   const hash = crypto.createHash('sha256')
     .update(challengeCode + verificationToken + endpoint)
